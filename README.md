@@ -18,12 +18,12 @@ gost12sum [-v] [-c &lt;hash.g12&gt;] [-r] [-l] -t &lt;file.ext&gt;
 
 #### Generate hashsum list:
 <pre>
-$ ./gost12sum [-r] -t "*.*" > hash.txt
+$ ./gost12sum [-r] -t "*.*" > hash.g12
 </pre>
 ##### Always works in binary mode. 
 
 #### Check hashsum file:
 <pre>
-$ ./gost12sum [-v] -c hash.txt
+$ ./gost12sum [-v] -c hash.g12
 </pre>
 ##### Exit code is always 0 in vebose mode. 
