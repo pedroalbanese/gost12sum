@@ -37,7 +37,6 @@ func main() {
 	if err != nil {
 	    log.Fatal(err)
 	}
-
 	for _, match := range files {
 	var h hash.Hash
 	if *long == false {
@@ -49,12 +48,17 @@ func main() {
         if err != nil {
             log.Fatal(err)
         }
+	file, err := os.Stat(match)
+	if file.IsDir() {
+	} else {
         if _, err := io.Copy(h, f); err != nil {
             log.Fatal(err)
         }
     	fmt.Println(hex.EncodeToString(h.Sum(nil)), "*" + f.Name())
 	}
 	}
+	}
+
 
 	if *target != "" && *recursive == true {
 		err := filepath.Walk(filepath.Dir(*target),
@@ -153,5 +157,6 @@ func main() {
 	}
 	}
 	}
+
 	}
 }
