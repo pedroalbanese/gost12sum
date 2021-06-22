@@ -56,9 +56,9 @@ func main() {
 				if _, err := io.Copy(h, f); err != nil {
 					log.Fatal(err)
 				}
-				f.Close()
 				fmt.Println(hex.EncodeToString(h.Sum(nil)), "*"+f.Name())
 			}
+			f.Close()
 		}
 	}
 
