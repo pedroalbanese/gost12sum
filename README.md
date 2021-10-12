@@ -27,3 +27,8 @@ $ ./gost12sum [-r] -t "*.*" > hash.g12
 $ ./gost12sum [-v] -c hash.g12
 </pre>
 ##### Exit code is always 0 in vebose mode. 
+
+## License
+
+This project is licensed under the ISC License.
+##### Copyright (c) 2020-2021 Pedro Albanese - ALBANESE Lab.
