@@ -5,14 +5,15 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"github.com/pedroalbanese/gogost/gost34112012256"
-	"github.com/pedroalbanese/gogost/gost34112012512"
 	"hash"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	
+	"github.com/pedroalbanese/gogost/gost34112012256"
+	"github.com/pedroalbanese/gogost/gost34112012512"
 )
 
 var (
@@ -32,6 +33,18 @@ func main() {
 		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] -t <file.ext>\n\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
+	}
+
+	if *target == "-" {
+		var h hash.Hash
+		if *long == false {
+			h = gost34112012256.New()
+		} else if *long == true {
+			h = gost34112012512.New()
+		}
+		io.Copy(h, os.Stdin)
+		fmt.Println(hex.EncodeToString(h.Sum(nil)) + " (stdin)")
+		os.Exit(0)
 	}
 
 	if *target != "" && *recursive == false {
@@ -103,7 +116,16 @@ func main() {
 	}
 
 	if *check != "" {
-		file, err := os.Open(*check)
+		var file io.Reader
+		var err error
+		if *check == "-" {
+			file = os.Stdin
+		} else {
+			file, err = os.Open(*check)
+			if err != nil {
+				log.Fatalf("failed opening file: %s", err)
+			}
+		}
 
 		if err != nil {
 			log.Fatalf("failed opening file: %s", err)
@@ -116,8 +138,6 @@ func main() {
 		for scanner.Scan() {
 			txtlines = append(txtlines, scanner.Text())
 		}
-
-		file.Close()
 
 		for _, eachline := range txtlines {
 			lines := strings.Split(string(eachline), " *")
