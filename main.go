@@ -127,10 +127,6 @@ func main() {
 			}
 		}
 
-		if err != nil {
-			log.Fatalf("failed opening file: %s", err)
-		}
-
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanLines)
 		var txtlines []string
