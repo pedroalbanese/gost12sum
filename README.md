@@ -1,5 +1,7 @@
 # GOST12SUM(2)
-
+[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/pedroalbanese/gost12sum/blob/master/LICENSE.md) 
+[![GoDoc](https://godoc.org/github.com/pedroalbanese/gost12sum?status.png)](http://godoc.org/github.com/pedroalbanese/gost12sum)
+[![Go Report Card](https://goreportcard.com/badge/github.com/pedroalbanese/gost12sum)](https://goreportcard.com/report/github.com/pedroalbanese/gost12sum)
 <pre>
 GOST R 34.11-2012 Streebog256/512 Hashsum Tool - ALBANESE Lab (c) 2020-2021
 
