@@ -30,7 +30,7 @@ func main() {
 		fmt.Println("GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
 		fmt.Println("GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
 		fmt.Println("Usage of", os.Args[0]+":")
-		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] [<file.ext>]\n\n", os.Args[0])
+		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
