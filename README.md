@@ -13,7 +13,7 @@ gost12sum [-v] [-c &lt;hash.g12&gt;] [-r] [-l] [&lt;file.ext&gt;]
         Check hashsum file
   -l    Use 512 bit hash (default 256-bit)
   -r    Process directories recursively
-  -v    Verbose mode (for CHECK command)
+  -v    Verbose mode (for CHECK command)</pre>
 
 ### Examples:
 
