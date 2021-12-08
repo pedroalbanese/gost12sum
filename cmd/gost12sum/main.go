@@ -27,10 +27,10 @@ func main() {
 	flag.Parse()
 
 	if len(os.Args) < 2 {
-		fmt.Println("GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
-		fmt.Println("GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
-		fmt.Println("Usage of", os.Args[0]+":")
-		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
+		fmt.Fprintln(os.Stderr, "GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
+		fmt.Fprintln(os.Stderr, "GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
+		fmt.Fprintln(os.Stderr, "Usage of", os.Args[0]+":")
+		fmt.Fprintf(os.Stderr, "%s [-v] [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
