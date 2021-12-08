@@ -17,25 +17,28 @@ import (
 )
 
 var (
-	check     = flag.String("c", "", "Check hashsum file.")
+	check     = flag.String("c", "", "Check hashsum file")
 	long      = flag.Bool("l", false, "Use 512 bit hash (default 256-bit)")
-	recursive = flag.Bool("r", false, "Process directories recursively.")
-	target    = flag.String("t", "", "Target file/wildcard to generate hashsum list.")
-	verbose   = flag.Bool("v", false, "Verbose mode. (for CHECK command)")
+	recursive = flag.Bool("r", false, "Process directories recursively")
+	verbose   = flag.Bool("v", false, "Verbose mode (for CHECK command)")
 )
 
 func main() {
 	flag.Parse()
 
 	if len(os.Args) < 2 {
-		fmt.Println("GOST R 34.11-2012 Streebog256/512 Hashsum Tool - ALBANESE Lab (c) 2020-2021\n")
+		fmt.Println("GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
+		fmt.Println("GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
 		fmt.Println("Usage of", os.Args[0]+":")
-		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] -t <file.ext>\n\n", os.Args[0])
+		fmt.Printf("%s [-v] [-c <hash.g12>] [-r] [-l] [<file.ext>]\n\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	if *target == "-" {
+	Array := flag.Args()
+	Files := strings.Join(Array, " ")
+
+	if Files == "-" {
 		var h hash.Hash
 		if *long == false {
 			h = gost34112012256.New()
@@ -47,12 +50,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *target != "" && *recursive == false {
-		files, err := filepath.Glob(*target)
-		if err != nil {
-			log.Fatal(err)
-		}
-		for _, match := range files {
+	if *check == "" && *recursive == false {
+		for _, match := range flag.Args() {
 			var h hash.Hash
 			if *long == false {
 				h = gost34112012256.New()
@@ -73,10 +72,11 @@ func main() {
 			}
 			f.Close()
 		}
+		os.Exit(0)
 	}
 
-	if *target != "" && *recursive == true {
-		err := filepath.Walk(filepath.Dir(*target),
+	if *check == "" && *recursive == true {
+		err := filepath.Walk(filepath.Dir(Files),
 			func(path string, info os.FileInfo, err error) error {
 				if err != nil {
 					return err
@@ -84,28 +84,30 @@ func main() {
 				file, err := os.Stat(path)
 				if file.IsDir() {
 				} else {
-					filename := filepath.Base(path)
-					pattern := filepath.Base(*target)
-					matched, err := filepath.Match(pattern, filename)
-					if err != nil {
-						fmt.Println(err)
-					}
-					if matched {
-						var h hash.Hash
-						if *long == false {
-							h = gost34112012256.New()
-						} else if *long == true {
-							h = gost34112012512.New()
-						}
-						f, err := os.Open(path)
+					for _, match := range flag.Args() {
+						filename := filepath.Base(path)
+						pattern := filepath.Base(match)
+						matched, err := filepath.Match(pattern, filename)
 						if err != nil {
-							log.Fatal(err)
+							fmt.Println(err)
 						}
-						if _, err := io.Copy(h, f); err != nil {
-							log.Fatal(err)
+						if matched {
+							var h hash.Hash
+							if *long == false {
+								h = gost34112012256.New()
+							} else if *long == true {
+								h = gost34112012512.New()
+							}
+							f, err := os.Open(path)
+							if err != nil {
+								log.Fatal(err)
+							}
+							if _, err := io.Copy(h, f); err != nil {
+								log.Fatal(err)
+							}
+							f.Close()
+							fmt.Println(hex.EncodeToString(h.Sum(nil)), "*"+f.Name())
 						}
-						f.Close()
-						fmt.Println(hex.EncodeToString(h.Sum(nil)), "*"+f.Name())
 					}
 				}
 				return nil
