@@ -28,15 +28,14 @@ func main() {
 
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
-		fmt.Fprintln(os.Stderr, "GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
+		fmt.Fprintln(os.Stderr, "GOST R 34.11-2012 Streebog 256/512-bit Recursive Hasher\n")
 		fmt.Fprintln(os.Stderr, "Usage of", os.Args[0]+":")
 		fmt.Fprintf(os.Stderr, "%s [-v] [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	Array := flag.Args()
-	Files := strings.Join(Array, " ")
+	Files := strings.Join(flag.Args(), " ")
 
 	if Files == "-" {
 		var h hash.Hash
@@ -47,6 +46,35 @@ func main() {
 		}
 		io.Copy(h, os.Stdin)
 		fmt.Println(hex.EncodeToString(h.Sum(nil)) + " (stdin)")
+		os.Exit(0)
+	}
+
+	if strings.Contains(Files, "*") && *check == "" && *recursive == false {
+		files, err := filepath.Glob(Files)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, match := range files {
+			var h hash.Hash
+			if *long == false {
+				h = gost34112012256.New()
+			} else if *long == true {
+				h = gost34112012512.New()
+			}
+			f, err := os.Open(match)
+			if err != nil {
+				log.Fatal(err)
+			}
+			file, err := os.Stat(match)
+			if file.IsDir() {
+			} else {
+				if _, err := io.Copy(h, f); err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(hex.EncodeToString(h.Sum(nil)), "*"+f.Name())
+			}
+			f.Close()
+		}
 		os.Exit(0)
 	}
 
