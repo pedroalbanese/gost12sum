@@ -7,8 +7,7 @@
 ### GOST R 34.11-2012 Streebog256/512 Hashsum Tool
 <pre>
 Usage of gost12sum:
-gost12sum [-v] [-c &lt;hash.g12&gt;] [-r] [-l] [&lt;file.ext&gt;]
-
+gost12sum [-v] [-c &lt;hash.g12&gt;] [-r] [-l] &lt;file.ext&gt;
   -c string
         Check hashsum file
   -l    Use 512 bit hash (default 256-bit)
