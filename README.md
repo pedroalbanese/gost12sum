@@ -32,4 +32,4 @@ $ ./gost12sum [-v] [-l] -c hash.g12
 ## License
 
 This project is licensed under the ISC License.
-##### Copyright (c) 2020-2021 Pedro Albanese - ALBANESE Research Lab.
+##### Copyright (c) 2020-2021 Pedro F. Albanese - ALBANESE Research Lab.
