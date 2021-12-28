@@ -1,5 +1,6 @@
 # GOST12SUM(2)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/pedroalbanese/gost12sum/blob/master/LICENSE.md) 
+[![GitHub downloads](https://img.shields.io/github/downloads/pedroalbanese/gost12sum/total.svg?logo=github&logoColor=white)](https://github.com/pedroalbanese/gost12sum/releases)
 [![GoDoc](https://godoc.org/github.com/pedroalbanese/gost12sum?status.png)](http://godoc.org/github.com/pedroalbanese/gost12sum)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pedroalbanese/gost12sum)](https://goreportcard.com/report/github.com/pedroalbanese/gost12sum)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/pedroalbanese/gost12sum)](https://golang.org)
