@@ -6,7 +6,7 @@
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/pedroalbanese/gost12sum)](https://golang.org)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/pedroalbanese/gost12sum)](https://github.com/pedroalbanese/gost12sum/releases)
 ### GOST R 34.11-2012 Streebog256/512 Hashsum Tool
-```sh
+```
 Usage of gost12sum:
 ./gost12sum [-c <hash.g12>] [-r] [-l] <file.ext>
   -c string
