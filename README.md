@@ -25,7 +25,7 @@ $ ./gost12sum [-r] [-l] "*.*" > hash.g12
 
 #### Check hashsum file:
 ```sh
-$ ./gost12sum [-l] -c hash.g12
+$ ./gost12sum -c hash.g12
 $ echo $?
 ```
 
