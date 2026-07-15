@@ -6,14 +6,14 @@
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/pedroalbanese/gost12sum)](https://golang.org)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/pedroalbanese/gost12sum)](https://github.com/pedroalbanese/gost12sum/releases)
 ### GOST R 34.11-2012 Streebog256/512 Hashsum Tool
-<pre>
+```sh
 Usage of gost12sum:
-gost12sum [-v] [-c &lt;hash.g12&gt;] [-r] [-l] &lt;file.ext&gt;
+./gost12sum [-c <hash.g12>] [-r] [-l] <file.ext>
   -c string
-        Check hashsum file
+        Check hashsum file.
   -l    Use 512 bit hash (default 256-bit)
-  -r    Process directories recursively
-  -v    Verbose mode (for CHECK command)</pre>
+  -r    Process directories recursively.
+```
 
 ### Examples:
 
@@ -25,7 +25,7 @@ $ ./gost12sum [-r] [-l] "*.*" > hash.g12
 
 #### Check hashsum file:
 ```sh
-$ ./gost12sum [-v] [-l] -c hash.g12
+$ ./gost12sum [-l] -c hash.g12
 ```
 ##### Exit code is always 0 in vebose mode. 
 
