@@ -26,10 +26,10 @@ $ ./gost12sum [-r] [-l] "*.*" > hash.g12
 #### Check hashsum file:
 ```sh
 $ ./gost12sum [-l] -c hash.g12
+$ echo $?
 ```
-##### Exit code is always 0 in vebose mode. 
 
 ## License
 
 This project is licensed under the ISC License.
-##### Copyright (c) 2020-2021 Pedro F. Albanese - ALBANESE Research Lab.
+##### Copyright (c) 2020-2026 Pedro F. Albanese - ALBANESE Research Lab.
