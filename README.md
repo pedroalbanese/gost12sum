@@ -29,6 +29,8 @@ $ ./gost12sum -c hash.g12
 $ echo $?
 ```
 
+Check also: https://github.com/pedroalbanese/edgetk
+
 ## License
 
 This project is licensed under the ISC License.
