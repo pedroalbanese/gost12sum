@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	bits      = flag.Int("b", 256, "Bits: 256 and 512.")
+	long      = flag.Bool("l", false, "Use 512 bit hash (default 256-bit)")
 	check     = flag.String("c", "", "Check hashsum file.")
 	recursive = flag.Bool("r", false, "Process directories recursively.")
 )
@@ -25,10 +25,11 @@ var (
 func main() {
 	flag.Parse()
 
-	if (len(os.Args) < 2) || (*bits != 224 && *bits != 256 && *bits != 384 && *bits != 512) {
-		fmt.Println("SHA3 Hashsum Tool - ALBANESE Lab (c) 2020-2022\n")
+	if len(os.Args) < 2 {
+		fmt.Println("GOST12SUM(2) Copyright (c) 2020-2026 ALBANESE Research Lab")
+		fmt.Println("GOST R 34.11-2012 - Streebog 256/512-bit Recursive Hasher\n")
 		fmt.Println("Usage of", os.Args[0]+":")
-		fmt.Printf("%s [-c <hash.ext>] [-b N] [-r] <file.ext>\n", os.Args[0])
+		fmt.Printf("%s [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
@@ -37,9 +38,9 @@ func main() {
 
 	if Files == "-" {
 		var h hash.Hash
-		if *bits == 256 {
+		if *long == false {
 			h = gost34112012256.New()
-		} else if *bits == 512 {
+		} else if *long == true {
 			h = gost34112012512.New()
 		}
 		io.Copy(h, os.Stdin)
@@ -55,9 +56,9 @@ func main() {
 			}
 			for _, match := range files {
 				var h hash.Hash
-				if *bits == 256 {
+				if *long == false {
 					h = gost34112012256.New()
-				} else if *bits == 512 {
+				} else if *long == true {
 					h = gost34112012512.New()
 				}
 				f, err := os.Open(match)
@@ -96,9 +97,9 @@ func main() {
 						}
 						if matched {
 							var h hash.Hash
-							if *bits == 256 {
+							if *long == false {
 								h = gost34112012256.New()
-							} else if *bits == 512 {
+							} else if *long == true {
 								h = gost34112012512.New()
 							}
 							f, err := os.Open(path)
