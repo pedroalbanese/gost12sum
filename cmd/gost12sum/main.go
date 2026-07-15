@@ -17,20 +17,18 @@ import (
 )
 
 var (
-	check     = flag.String("c", "", "Check hashsum file")
-	long      = flag.Bool("l", false, "Use 512 bit hash (default 256-bit)")
-	recursive = flag.Bool("r", false, "Process directories recursively")
-	verbose   = flag.Bool("v", false, "Verbose mode (for CHECK command)")
+	bits      = flag.Int("b", 256, "Bits: 256 and 512.")
+	check     = flag.String("c", "", "Check hashsum file.")
+	recursive = flag.Bool("r", false, "Process directories recursively.")
 )
 
 func main() {
 	flag.Parse()
 
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "GOST12SUM(2) Copyright (c) 2020-2021 ALBANESE Research Lab")
-		fmt.Fprintln(os.Stderr, "GOST R 34.11-2012 Streebog 256/512-bit Recursive Hasher\n")
-		fmt.Fprintln(os.Stderr, "Usage of", os.Args[0]+":")
-		fmt.Fprintf(os.Stderr, "%s [-v] [-c <hash.g12>] [-r] [-l] <file.ext>\n", os.Args[0])
+	if (len(os.Args) < 2) || (*bits != 224 && *bits != 256 && *bits != 384 && *bits != 512) {
+		fmt.Println("SHA3 Hashsum Tool - ALBANESE Lab (c) 2020-2022\n")
+		fmt.Println("Usage of", os.Args[0]+":")
+		fmt.Printf("%s [-c <hash.ext>] [-b N] [-r] <file.ext>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
@@ -39,9 +37,9 @@ func main() {
 
 	if Files == "-" {
 		var h hash.Hash
-		if *long == false {
+		if *bits == 256 {
 			h = gost34112012256.New()
-		} else if *long == true {
+		} else if *bits == 512 {
 			h = gost34112012512.New()
 		}
 		io.Copy(h, os.Stdin)
@@ -57,9 +55,9 @@ func main() {
 			}
 			for _, match := range files {
 				var h hash.Hash
-				if *long == false {
+				if *bits == 256 {
 					h = gost34112012256.New()
-				} else if *long == true {
+				} else if *bits == 512 {
 					h = gost34112012512.New()
 				}
 				f, err := os.Open(match)
@@ -98,9 +96,9 @@ func main() {
 						}
 						if matched {
 							var h hash.Hash
-							if *long == false {
+							if *bits == 256 {
 								h = gost34112012256.New()
-							} else if *long == true {
+							} else if *bits == 512 {
 								h = gost34112012512.New()
 							}
 							f, err := os.Open(path)
@@ -133,11 +131,6 @@ func main() {
 				log.Fatalf("failed opening file: %s", err)
 			}
 		}
-
-		if err != nil {
-			log.Fatalf("failed opening file: %s", err)
-		}
-
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanLines)
 		var txtlines []string
@@ -145,15 +138,14 @@ func main() {
 		for scanner.Scan() {
 			txtlines = append(txtlines, scanner.Text())
 		}
-
+		var exit int
 		for _, eachline := range txtlines {
 			lines := strings.Split(string(eachline), " *")
-
 			if strings.Contains(string(eachline), " *") {
 				var h hash.Hash
-				if *long == false {
+				if len(lines[0])*4 == 256 {
 					h = gost34112012256.New()
-				} else if *long == true {
+				} else if len(lines[0])*4 == 512 {
 					h = gost34112012512.New()
 				}
 				_, err := os.Stat(lines[1])
@@ -165,26 +157,18 @@ func main() {
 					io.Copy(h, f)
 					f.Close()
 
-					if *verbose {
-						if hex.EncodeToString(h.Sum(nil)) == lines[0] {
-							fmt.Println(lines[1]+"\t", "OK")
-						} else {
-							fmt.Println(lines[1]+"\t", "FAILED")
-						}
+					if hex.EncodeToString(h.Sum(nil)) == lines[0] {
+						fmt.Println(lines[1]+"\t", "OK")
 					} else {
-						if hex.EncodeToString(h.Sum(nil)) == lines[0] {
-						} else {
-							os.Exit(1)
-						}
+						fmt.Println(lines[1]+"\t", "FAILED")
+						exit = 1
 					}
 				} else {
-					if *verbose {
-						fmt.Println(lines[1]+"\t", "Not found!")
-					} else {
-						os.Exit(1)
-					}
+					fmt.Println(lines[1]+"\t", "Not found!")
+					exit = 1
 				}
 			}
 		}
+		os.Exit(exit)
 	}
 }
